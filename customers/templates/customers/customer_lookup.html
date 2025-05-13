@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Lookup</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; }
+        .container { max-width: 600px; margin: 2rem auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px #ccc; }
+        .error { color: red; }
+        .result { background: #f9f9f9; padding: 1rem; border-radius: 6px; margin-top: 1rem; }
+        label { display: block; margin-top: 1rem; }
+        input, select { width: 100%; padding: 0.5rem; margin-top: 0.5rem; }
+        button { margin-top: 1rem; padding: 0.5rem 1rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Customer Lookup</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="document_type">Document Type:</label>
+        <select id="document_type" name="document_type" required>
+            <option value="">Select a document type</option>
+            {% for doc_type in document_types %}
+                <option value="{{ doc_type.id }}">{{ doc_type.name }}</option>
+            {% endfor %}
+        </select>
+        <label for="identification_number">Document Number:</label>
+        <input type="text" id="identification_number" name="identification_number" required>
+        <button type="submit">Search</button>
+    </form>
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+    {% if customer %}
+        <div class="result" id="customer-result">
+            <h3>Customer Info</h3>
+            <ul>
+                <li><b>Name:</b> {{ customer.first_name }} {{ customer.last_name }}</li>
+                <li><b>Email:</b> {{ customer.email }}</li>
+                <li><b>Phone:</b> {{ customer.phone_number }}</li>
+                <li><b>Country:</b> {{ customer.country }}</li>
+                <li><b>City:</b> {{ customer.city }}</li>
+                <li><b>Address:</b> {{ customer.address }}</li>
+                <li><b>Document Type:</b> {{ customer.document_type }}</li>
+                <li><b>Identification Number:</b> {{ customer.identification_number }}</li>
+            </ul>
+            <h4>Total Purchases: {{ total_purchases }}</h4>
+            <h4>Purchases:</h4>
+            <ul>
+                {% if purchases and purchases|length > 0 %}
+                    {% for purchase in purchases %}
+                        <li>Date: {{ purchase.purchase_date }} | Total: {{ purchase.total }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li>No purchases found.</li>
+                {% endif %}
+            </ul>
+            <button onclick="exportTxt()">Export as TXT</button>
+        </div>
+        <script>
+        function exportTxt() {
+            const text = `{{ export_text|escapejs }}`;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'customer_info.txt';
+            link.click();
+        }
+        </script>
+    {% endif %}
+</div>
+</body>
+</html>
