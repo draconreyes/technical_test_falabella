@@ -10,10 +10,11 @@ Este proyecto es una aplicación Django para la gestión de clientes, productos 
 
 1. **Clona el repositorio o descarga el código fuente.**
 
-2. **Crea un entorno virtual:**
+2. **Crea un entorno virtual en windows:**
 
    ```powershell
    python -m venv venv
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
    venv\Scripts\activate
    ```
 
