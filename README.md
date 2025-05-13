@@ -40,6 +40,10 @@ Este proyecto es una aplicación Django para la gestión de clientes, productos 
 
    Allí podrás consultar clientes, ver sus compras y exportar información.
 
+## Usuarios de ejemplo
+- Usuario 1: tipo de documento **C.C** y número de documento **12345678**
+- Usuario 1: tipo de documento **C.C** y número de documento **11223344**
+
 ## Notas
 - Todos los endpoints de la API están disponibles bajo `/api/`.
 - Puedes ver la API de los modelos en: [http://localhost:8000](http://localhost:8000)
